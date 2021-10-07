@@ -1,0 +1,21 @@
+import constants.Dependencies
+
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath Dependencies.Core.androidGradlePlugin
+        classpath Dependencies.Kotlin.gradlePlugin
+        classpath Dependencies.Hilt.gradlePlugin
+    }
+}
+
+plugins {
+    id "com.github.ben-manes.versions" version "0.39.0"
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

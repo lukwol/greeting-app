@@ -1,0 +1,92 @@
+import constants.BuildConstants
+import constants.Dependencies
+
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk BuildConstants.compileSdk
+
+    defaultConfig {
+        applicationId BuildConstants.applicationId
+        minSdk BuildConstants.minSdk
+        targetSdk BuildConstants.targetSdk
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner 'com.example.testing.HiltTestRunner'
+        vectorDrawables {
+            useSupportLibrary true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        useIR = true
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion Dependencies.Compose.version
+    }
+
+    packagingOptions {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+}
+
+dependencies {
+    implementation project(path: ':data')
+    androidTestImplementation project(path: ':testing')
+    androidTestImplementation project(path: ':data-testing')
+
+    implementation Dependencies.Android.appcompat
+    implementation Dependencies.Android.coreKtx
+    implementation Dependencies.Android.material
+    implementation Dependencies.Android.Lifecycle.runtime
+
+    implementation Dependencies.Coroutines.core
+    implementation Dependencies.Coroutines.android
+
+    implementation Dependencies.Compose.ui
+    implementation Dependencies.Compose.material
+    implementation Dependencies.Compose.tooling
+    implementation Dependencies.Compose.Extra.activity
+    implementation Dependencies.Compose.Extra.navigation
+    implementation Dependencies.Compose.Extra.hiltNavigation
+
+    implementation Dependencies.Dagger.dagger
+    implementation Dependencies.Hilt.android
+    kapt Dependencies.Dagger.compiler
+    kapt Dependencies.Hilt.compiler
+    kapt Dependencies.Android.Hilt.compiler
+
+    testImplementation Dependencies.Testing.junit
+    androidTestImplementation Dependencies.Android.Fragment.fragment
+    androidTestImplementation Dependencies.Android.Fragment.fragmentKtx
+    androidTestImplementation Dependencies.Testing.Kotest.assertions
+    androidTestImplementation Dependencies.Hilt.testing
+    androidTestImplementation Dependencies.Testing.junitExt
+    androidTestImplementation Dependencies.Compose.uiTest
+    kaptAndroidTest Dependencies.Dagger.compiler
+    kaptAndroidTest Dependencies.Hilt.compiler
+
+    debugImplementation Dependencies.Compose.uiTestManifest
+}
